@@ -1,0 +1,127 @@
+"use client";
+import { isWithinInterval } from "date-fns";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+import { useReservation } from "./ReservationContext";
+
+function isAlreadyBooked(range, datesArr) {
+  return (
+    range.from &&
+    range.to &&
+    datesArr.some((date) =>
+      isWithinInterval(date, {
+        start: range.from,
+        end: range.to,
+      })
+    )
+  );
+}
+
+function DateSelector({
+  settings,
+  cabin,
+  bookedDates,
+}) {
+  // CHANGE
+  const regularPrice = 23;
+  const discount = 23;
+  const numNights = 23;
+  const cabinPrice = 23;
+
+  // SETTINGS
+  const { minBookingLength, maxBookingLength } =
+    settings;
+  const { range, setRange, resetRange } =
+    useReservation();
+
+  return (
+    <div className="flex flex-col justify-between">
+      {/* mode="range" Sets the calendar to range
+      selection mode, allowing users to pick a
+      start and end date. */}
+      {/* min={minBookingLength + 1} */}
+      {/* Sets the minimum number of days that can be
+      selected in the range. */}
+      {/* max={maxBookingLength}
+      Sets the maximum number of days allowed for
+      the range. maxBookingLength is another
+      variable from state or prop */}
+      {/* romMonth={new Date()}
+      Makes the calendar start displaying from the
+      current month. fromDate={new Date()}
+      Prevents users from selecting dates before
+      today. toYear={new Date().getFullYear() + 5}
+      Allows date selection up to five years from
+      the current year. */}
+      {/* aptionLayout="dropdown" Displays the month
+      and year as dropdown menus for easy
+      navigation. */}
+      {/* numberOfMonths={2}
+      Displays two months side-by-side, useful for
+      range selection. */}
+      <div>
+        <DayPicker
+          className="pt-12 place-self-center"
+          mode="range"
+          min={minBookingLength + 1}
+          max={maxBookingLength}
+          fromMonth={new Date()}
+          fromDate={new Date()}
+          toYear={new Date().getFullYear() + 5}
+          captionLayout="dropdown"
+          numberOfMonths={2}
+          selected={range}
+          onSelect={setRange}
+        />
+      </div>
+      <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-[72px]">
+        <div className="flex items-baseline gap-6">
+          <p className="flex gap-2 items-baseline">
+            {discount > 0 ? (
+              <>
+                <span className="text-2xl">
+                  ${regularPrice - discount}
+                </span>
+                <span className="line-through font-semibold text-primary-700">
+                  ${regularPrice}
+                </span>
+              </>
+            ) : (
+              <span className="text-2xl">
+                ${regularPrice}
+              </span>
+            )}
+            <span className="">/night</span>
+          </p>
+          {numNights ? (
+            <>
+              <p className="bg-accent-600 px-3 py-2 text-2xl">
+                <span>&times;</span>{" "}
+                <span>{numNights}</span>
+              </p>
+              <p>
+                <span className="text-lg font-bold uppercase">
+                  Total
+                </span>{" "}
+                <span className="text-2xl font-semibold">
+                  ${cabinPrice}
+                </span>
+              </p>
+            </>
+          ) : null}
+        </div>
+
+        {range.from || range.to ? (
+          <button
+            className="border border-primary-800 py-2 px-4 text-sm font-semibold"
+            onClick={() => resetRange()}
+          >
+            Clear
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+export default DateSelector;

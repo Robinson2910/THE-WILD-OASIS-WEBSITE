@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
+    "baseUrl": ".", // Root of the project
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["app/*"] // Aliases for the 'app' folder
     }
   }
 }
