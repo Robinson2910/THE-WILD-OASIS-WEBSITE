@@ -1,8 +1,8 @@
-import Logo from "@/_components/Logo";
-import Navigation from "@/_components/Navigation";
-
 import "@/_styles/globals.css";
 
+//export metadata
+//tite :templatewith place holder
+//
 export const metadata = {
   title: {
     template: "%s Wild oasis",
